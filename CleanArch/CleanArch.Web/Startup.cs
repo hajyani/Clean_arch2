@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using CleanArch.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CleanArch.Infra.Data.Context;
 
 namespace CleanArch.Web
 {
@@ -38,9 +39,15 @@ namespace CleanArch.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("UniversityIdentityDBConnection")));
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddDbContext<UniversityDbContext>(options =>
+           {
+               options.UseSqlServer(Configuration.GetConnectionString("UniversityDbConnection"));
+           });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
